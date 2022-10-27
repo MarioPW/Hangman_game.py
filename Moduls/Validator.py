@@ -1,3 +1,6 @@
+from http.client import HTTPConnection
+from Hangman_filter import list_words
+import requests
 
 class Validator():
 
@@ -22,14 +25,34 @@ class Validator():
 
     def letter_validator(letter):
         
-        lower_letters = [chr(i) for i in range(97,123)]
-        upper_letters = [chr(i) for i in range(65,91)]
-        valid_chr = lower_letters + upper_letters
+        err = "You must fill in one letter only (no numbers, sings or blanks): "
+        try:
+            if len(letter)==1:
+                if letter.isalpha() == True:   
+                    return str(letter.upper())
+                else:
+                    print(err)
+                    return '_'   
+            else:
+                print(err)
+                return '_'                      
+        except:
+            print(err)
+            return '_'
+    
+    def get_url(index):
+        
+        urls = ["Days.txt","Months.txt","Animals.txt","Whole_words.txt","words2.txt"]
+        return urls[index-1]
+    
+    # def get_words_from_url():
 
-        if letter in valid_chr:
-            return letter
-
-        else:
-            print("You must fill in one letter only (no numbers, sings or blanks): ")
+    #     users_url = input("Fill in your text file URL (Ej: file.txt, file.doc)")
+    #     file = open(users_url,"r")
+    #     words = file.read()
+    #     file.close()
+    #     list_words(words, "Users_words.txt")
+        
+    #     return "Users_words.txt"
 
 

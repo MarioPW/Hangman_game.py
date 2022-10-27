@@ -8,21 +8,22 @@ print("""\nSelect Category:\n
    1 - Days of the week
    2 - Months of the year
    3 - Animals
-   4 - The Whole words\n""")
+   4 - The Whole words
+   5 - Words from my .txt file: (Copy-Paste an URL\n""")
 
-menu = Validator.menu_options_validator("Category: ", "Please select a number from 1 to 4 only",range(1,5))
-if menu == 1:
-    file = "Days.txt"
-elif menu == 2:
-    file = "Months.txt"
-elif menu == 3:
-    file = "Animals.txt"
-else:
-    file = "Whole_words.txt"
+menu = Validator.menu_options_validator("Category: ", "Please select a number from 1 to 4 only",range(1,6))
+if menu in range(1,5):
+    file = Validator.get_url(menu)
+elif menu == 5:
+    doc = input("Fill in your text file URL  (Ej: file.txt) ")
+    clean_doc = doc[1:-1]
+    file = list_words(clean_doc, "Users_words.txt")
+
+print(f"You Selected {file.upper()} !!!")
 
 words_list = open(file,"r")
 words = words_list.read()
-words_list.close
+words_list.close()
 
 words = words.split()
 index = randrange(len(words))
@@ -35,7 +36,6 @@ cleaned_word = {
     ord("]"):None}
 word = word.translate(cleaned_word)
 
-
 #### GAME STARS!!! ####
 attempts = 5
 
@@ -44,16 +44,16 @@ lines = ["_" for i in range(len(word))]
 lines3 = "".join(lines)
 print(lines3)
 guessed = ""
-hits=0
-wrong=""
+hits = 0
+wrong = ""
 
-while attempts>0:
+while attempts > 0:
     if hits == len(word):
         print(word,  "\nYOU WIN!!!")
         break
     letter = input("Fill in a letter: ")
     print('\n')
-    correct_entry = str(Validator.letter_validator(letter)).upper()
+    correct_entry = Validator.letter_validator(letter)
     good_letter = correct_entry
     
     if good_letter in word:
@@ -65,10 +65,10 @@ while attempts>0:
                 hits += 1     
                 lines[i] = good_letter
     else:
-        wrong += good_letter+" " 
+        wrong += good_letter + " " 
         attempts -= 1
-    lines3="".join(lines)
+    lines3 = "".join(lines)
     print(f"Attempts: {attempts}\n{lines3}\n Guessed: {guessed}\n Wrong: {wrong}")
         
-if attempts==0:
+if attempts == 0:
         print("You lost... The word was", word)
