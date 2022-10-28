@@ -1,6 +1,5 @@
-
 from random import randrange
-from Hangman_filter import list_words
+from Hangman_filter import list_words, get_url
 from Validator import Validator
 
 #### GETTING WORD TO GUESS ####
@@ -9,18 +8,17 @@ print("""\nSelect Category:\n
    2 - Months of the year
    3 - Animals
    4 - The Whole words
-   5 - Words from my .txt file: (Copy-Paste an URL\n""")
+   5 - Words from my .txt file: (Copy-Paste a .txt files URL\n""")
 
-menu = Validator.menu_options_validator("Category: ", "Please select a number from 1 to 4 only",range(1,6))
+menu = Validator.intoptions("Category: ", "Please select a number from 1 to 4 only",range(1,6))
 if menu in range(1,5):
-    file = Validator.get_url(menu)
+    file = get_url(menu)
 elif menu == 5:
-    doc = input("Fill in your text file URL  (Ej: file.txt) ")
-    clean_doc = doc[1:-1]
-    file = list_words(clean_doc, "Users_words.txt")
+    good_url = Validator.url()
+    file = list_words(good_url, "Users_Words.txt")
 
-print(f"You Selected {file.upper()} !!!")
-
+print(f"\nYou Selected {file.replace('_',' ', ).replace('.txt', ' Category')}!!!")
+print("-"*36)
 words_list = open(file,"r")
 words = words_list.read()
 words_list.close()
@@ -53,12 +51,11 @@ while attempts > 0:
         break
     letter = input("Fill in a letter: ")
     print('\n')
-    correct_entry = Validator.letter_validator(letter)
-    good_letter = correct_entry
+    correct_entry = Validator.letters(letter)
+    good_letter = correct_entry.upper()
     
-    if good_letter in word:
-        if good_letter not in guessed: 
-            guessed += good_letter + " "
+    if good_letter in word and good_letter not in guessed:
+        guessed += good_letter + " "
         
         for i in range(len(word)):  
             if good_letter == word[i]:

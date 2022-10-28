@@ -7,7 +7,7 @@ def list_words(path, lists_name):
     words = text.read()
     text.close()
 
-    clean_text = filter(lambda x: x.isalpha() or x in ("\t","\n"," "), words)
+    clean_text = filter(lambda x: x.isalpha() or x in ("\t","\n"," ","ñ","Ñ"), words)
     clean_text1 = "".join(clean_text)
     splited = clean_text1.split()
 
@@ -24,4 +24,8 @@ def list_words(path, lists_name):
 
     return lists_name
 
+def get_url(index):
+        
+    urls = ["Days.txt","Months.txt","Animals.txt","Whole_Words.txt"]
+    return urls[index-1]
 #list_words("texto.txt","words3.txt")
